@@ -5,10 +5,14 @@ $(document).ready(function() {
 // Game constants
 var POSITION_START = 80; // The player start 80px from the left
 var SPEED= 2;
+var GRAVITY=4;
+var MAX_JUMP= 80;
 
 // Game var
 var nextstep = 0; // the direction for the next game refresh
-position = POSITION_START; // position set to the begining position
+var velocity = 0; // Whether the monkey go up or down
+var position = POSITION_START; // position set to the begining position
+var positiony = $("#player").position().top; // Position on the Y axis
 var worldSize = $("#sky").width();
 var isRunningRight = false;
 var isRunningLeft = false;
@@ -16,7 +20,7 @@ var keyTaken = false;
 var won = false;
 var username = $("#username").text().trim();
 var usernameSize = $("#username").width();
-
+var jumping=false;
 //Debug mode ? set to true to show the debug console
 var debug = false;
 
@@ -55,6 +59,15 @@ $(document).keydown(function(e){
     $("#player").css({backgroundImage: "url('img/monkey_left.png')"});
     nextstep = -SPEED; // Go in the opposite direction
     if(debug)   $("#debug").append("<- ");
+  }
+
+  if(e.keyCode == 38) // When the upper key is pressed
+  {
+    if(!jumping){ // Make the monkey jump only if he isn't jumping already
+    jumping = true;
+    velocity = -GRAVITY; // Go in the opposite direction
+    if(debug)   $("#debug").append(" ^ ");
+  }
   }
 
 
@@ -148,6 +161,20 @@ function updateJoueur(){
     position = 2; // He can't go any further and stay at the same place
   }
 
+  if(jumping){
+        positiony += velocity;
+    if($("#player").position().top + $("#player").height() > $("#game").height() ){
+      velocity = 0;
+      jumping = false;
+      positiony = $("#game").height() - $("#player").height();
+    }
+    else if($("#player").position().top < $("#game").height() - MAX_JUMP) {
+      velocity = GRAVITY;
+    }
+
+    $("#player").css({ top: positiony });
+  }
+
   // Refresh the player position
   $("#player").css({ left: position });
 
@@ -156,6 +183,8 @@ function updateJoueur(){
     // To his right if he's running right, to his left if he's running left
     if(isRunningRight) $("#key").css({ left: $("#player").position().left + $("#player").width()  });
     else if(isRunningLeft) $("#key").css({ left: $("#player").position().left - $("#key").width()});
+
+ $("#key").css({ top:  positiony - 10});
 
     // If he's gotten the key inside the house
     if($("#key").position().left <= $("#home").position().left + 60)
@@ -168,7 +197,6 @@ function updateJoueur(){
       nextstep = 0;
     }
   }
-
 
   // Does not show the username if at the end of the world
   if($("#username").offset().left + usernameSize > $("#game").width()){
