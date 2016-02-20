@@ -6,7 +6,7 @@ $(document).ready(function() {
 var POSITION_START = 80; // The player start 80px from the left
 var SPEED= 2;
 var GRAVITY=4;
-var MAX_JUMP= 80;
+var MAX_JUMP= 100;
 
 // Game var
 var nextstep = 0; // the direction for the next game refresh
@@ -65,25 +65,25 @@ $(document).keydown(function(e){
   {
     if(!jumping){ // Make the monkey jump only if he isn't jumping already
     jumping = true;
-    velocity = -GRAVITY; // Go in the opposite direction
+    velocity = -GRAVITY; // Go up first
     if(debug)   $("#debug").append(" ^ ");
   }
-  }
+}
 
 
-  // *** BLOCKS CONTROL ***
-  if(e.keyCode == 65) { // A Key
-    if(blocks[0].state == "inactive") blocks[0].state = "falling"; // the block is now falling
-    if(debug)  $("#debug").append("<br>A key pressed ");
-  }
-  if(e.keyCode == 90) { // Z Key
-    if(blocks[1].state == "inactive") blocks[1].state = "falling";
-    if(debug)   $("#debug").append("<br>Z key pressed ");
-  }
-  if(e.keyCode == 69){ // E Key
-    if(blocks[2].state == "inactive") blocks[2].state = "falling";
-    if(debug) $("#debug").append("<br>E key pressed");
-  }
+// *** BLOCKS CONTROL ***
+if(e.keyCode == 65) { // A Key
+  if(blocks[0].state == "inactive") blocks[0].state = "falling"; // the block is now falling
+  if(debug)  $("#debug").append("<br>A key pressed ");
+}
+if(e.keyCode == 90) { // Z Key
+  if(blocks[1].state == "inactive") blocks[1].state = "falling";
+  if(debug)   $("#debug").append("<br>Z key pressed ");
+}
+if(e.keyCode == 69){ // E Key
+  if(blocks[2].state == "inactive") blocks[2].state = "falling";
+  if(debug) $("#debug").append("<br>E key pressed");
+}
 });
 
 $(document).keyup(function(e){ // When a key is released
@@ -162,15 +162,34 @@ function updateJoueur(){
   }
 
   if(jumping){
-        positiony += velocity;
+    positiony += velocity; // The position Y depends of the velocity, positive velocity means going up, negative means going down
+
     if($("#player").position().top + $("#player").height() > $("#game").height() ){
+      // If the player is on the floor, he isn't jumping anymore
       velocity = 0;
       jumping = false;
       positiony = $("#game").height() - $("#player").height();
     }
-    else if($("#player").position().top < $("#game").height() - MAX_JUMP) {
-      velocity = GRAVITY;
+
+    else if($("#player").position().top < $("#game").height() - MAX_JUMP +10
+    && $("#player").position().top > $("#game").height() - MAX_JUMP) {
+      // If the player is in the peak of the jump, his speed decrease just like in real life
+      if(velocity >0 ) velocity =  GRAVITY/5;
+      else velocity =  -GRAVITY/5;
+      console.log("true");
     }
+
+    else if($("#player").position().top < $("#game").height() - MAX_JUMP) {
+      // He then falls full speed
+      velocity = GRAVITY;
+      console.log("TRUE");
+    }
+    else {
+      // Going up or down
+      if(velocity >0 ) velocity =  GRAVITY;
+      else velocity =  -GRAVITY;
+    }
+
 
     $("#player").css({ top: positiony });
   }
@@ -184,7 +203,7 @@ function updateJoueur(){
     if(isRunningRight) $("#key").css({ left: $("#player").position().left + $("#player").width()  });
     else if(isRunningLeft) $("#key").css({ left: $("#player").position().left - $("#key").width()});
 
- $("#key").css({ top:  positiony - 10});
+    $("#key").css({ top:  positiony - 10});
 
     // If he's gotten the key inside the house
     if($("#key").position().left <= $("#home").position().left + 60)
