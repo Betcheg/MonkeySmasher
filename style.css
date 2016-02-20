@@ -1,0 +1,109 @@
+body {
+  margin: 0;
+}
+
+#key{
+  background-image: url("img/key.png");
+  position: absolute;
+  height: 26px;
+  width: 32px;
+  right: 0;
+  margin-right: 20px;
+  bottom: 0;
+  margin-bottom: 6px;
+}
+
+#home {
+  background-image: url("img/home.png ");
+  height: 80px;
+  width: 120px;
+  left: 10;
+  bottom: 0;
+  color: white;
+  line-height: 26px;
+  padding-left: 5px;
+  position: absolute;
+
+}
+#debug {
+  left: 0;
+  top: 0;
+  position: absolute;
+  height: 700px;
+  width: 200px;
+  color: white;
+}
+#world {
+  margin: 0;
+  width : 100%;
+  height: 100%;
+}
+
+#sky {
+  top: 0;
+  position: absolute;
+  background-color: lightblue;
+  height: 70%;
+  width:100%;
+
+}
+
+#game {
+  position: absolute;
+  /*border-top: 1px solid red;
+  border-bottom: 1px solid red;*/
+  width: 100%;
+  height: 250px ;
+  bottom: 0;
+}
+
+#floor {
+  background-image: url("img/floor.png");
+  position: absolute;
+  width: 100%;
+  height: 30%;
+  bottom: 0;
+  position: absolute;
+}
+
+
+#player {
+  height: 19px;
+  width: 25px;
+  bottom: 0;
+  position: absolute;
+  background-image: url("img/monkey_right.png");
+  left: 80px;
+  color: white;
+  text-align: center;
+}
+
+.block {
+  height: 80px;
+  width: 80px;
+  top: 0;
+  position: absolute;
+  background-image: url("img/block.png");
+  text-align:center;
+  line-height:80px;
+  color:white;
+}
+
+#username {
+  height: 16px;
+  position: absolute;
+  margin-top: -20px;
+  color: black;
+}
+
+#firstb {
+  margin-left: 500px;
+}
+
+#secondb {
+  margin-left: 600px;
+}
+
+#thirdb {
+  margin-left: 700px;
+}
