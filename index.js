@@ -1,5 +1,12 @@
 $(document).ready(function() {
-  gamestart();
+  if( $("#world").width() > 1000 ) gamestart();
+  else {
+     $("body").html("Sorry, your screen resolution is too small to play :(");
+     $("body").css({backgroundImage: "url('')"});
+     // redirect them to "mini" server
+   }
+
+   gamestart();
 });
 
 // Game constants
@@ -7,13 +14,15 @@ var POSITION_START = 80; // The player start 80px from the left
 var SPEED= 2;
 var GRAVITY=4;
 var MAX_JUMP= 100;
+var POSITION_BLOCKS = 500;
+var SPACE_BETWEEN_BLOCKS = 5;
+var worldSize = $("#game").width();
 
 // Game var
 var nextstep = 0; // the direction for the next game refresh
 var velocity = 0; // Whether the monkey go up or down
 var position = POSITION_START; // position set to the begining position
 var positiony = $("#player").position().top; // Position on the Y axis
-var worldSize = $("#sky").width();
 var isRunningRight = false;
 var isRunningLeft = false;
 var keyTaken = false;
@@ -21,6 +30,10 @@ var won = false;
 var username = $("#username").text().trim();
 var usernameSize = $("#username").width();
 var jumping=false;
+var isStillJumping = false;
+var isRoaring = false;
+var isGettingRoared = false;
+
 //Debug mode ? set to true to show the debug console
 var debug = false;
 
@@ -40,6 +53,11 @@ block = {
 blocks.push(block);
 }
 
+// Place the graphical elements
+//$("body").css({backgroundImage: "url('')" });
+div[0].css({ marginLeft: POSITION_BLOCKS });
+div[1].css({ marginLeft: div[0].offset().left + div[0].width() + $("#player").width() + SPACE_BETWEEN_BLOCKS });
+div[2].css({ marginLeft: div[1].offset().left + div[1].width() + $("#player").width() + SPACE_BETWEEN_BLOCKS });
 
 $(document).keydown(function(e){
   // When a key is pressed
@@ -65,6 +83,7 @@ $(document).keydown(function(e){
   {
     if(!jumping){ // Make the monkey jump only if he isn't jumping already
     jumping = true;
+    isStillJumping = true;
     velocity = -GRAVITY; // Go up first
     if(debug)   $("#debug").append(" ^ ");
   }
@@ -92,11 +111,22 @@ $(document).keyup(function(e){ // When a key is released
   if(e.keyCode == 39) { // Right key
     isRunningRight = false;
     if(!isRunningRight && !isRunningLeft) nextstep = 0;
+    else if(isRunningLeft) {
+      nextstep = -SPEED; // Go left
+      $("#player").css({backgroundImage: "url('img/monkey_left.png')"});
+    }
   }
 
   if(e.keyCode == 37){ // Left key
     isRunningLeft = false;
     if(!isRunningRight && !isRunningLeft) nextstep = 0;
+    else if(isRunningRight) { nextstep = SPEED; // Go right
+      $("#player").css({backgroundImage: "url('img/monkey_right.png')"});
+    }
+  }
+
+  if(e.keyCode == 38){ // up key
+    isStillJumping = false;
   }
 });
 
@@ -112,6 +142,9 @@ $("#thirdb").click(function() {
   if(blocks[2].state == "inactive") blocks[2].state = "falling";
 });
 
+function roar() {
+
+}
 
 function gamestart() {
 
@@ -167,7 +200,7 @@ function updateJoueur(){
     if($("#player").position().top + $("#player").height() > $("#game").height() ){
       // If the player is on the floor, he isn't jumping anymore
       velocity = 0;
-      jumping = false;
+      if(!isStillJumping) jumping = false;
       positiony = $("#game").height() - $("#player").height();
     }
 
@@ -229,6 +262,7 @@ function updateJoueur(){
     $("#key").css({ left: $("#player").position().left - $("#key").width()});
   }
 }
+
 
 function updateBlock() {
 

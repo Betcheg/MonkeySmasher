@@ -1,5 +1,6 @@
 body {
-  margin: 0;
+  margin: auto;
+  background-image: url("img/sub_floor.png");
 }
 
 #key{
@@ -8,7 +9,7 @@ body {
   height: 26px;
   width: 32px;
   right: 0;
-  margin-right: 20px;
+  margin-right: 30px;
   bottom: 0;
   margin-bottom: 6px;
 }
@@ -42,7 +43,7 @@ body {
 #sky {
   top: 0;
   position: absolute;
-  background-color: lightblue;
+  background-color: #ecf0f1;
   height: 70%;
   width:100%;
 
@@ -52,18 +53,48 @@ body {
   position: absolute;
   /*border-top: 1px solid red;
   border-bottom: 1px solid red;*/
-  width: 100%;
+  width: 1000px;
   height: 250px ;
+  bottom: 0;
+  border-right: 1px solid red;
+}
+
+#deadlyspikes{
+  position: absolute;
+  border-left: 12px solid red;
+  margin-left: -10px;
+  background-color: brown;
+  height: 250px;
+  left: 0;
   bottom: 0;
 }
 
-#floor {
-  background-image: url("img/floor.png");
+#other{
   position: absolute;
-  width: 100%;
-  height: 30%;
+  margin-left: 1000px;
+  background-image: url("img/sub_floor.png");
+  height: 250px;
+  left: 0;
   bottom: 0;
+  right: 0;
+}
+
+
+
+#othertop{
+  background-image: url("img/jungle_floor.png");
+  right: 0;
+  height: 60px;
+}
+
+#floor {
+  background-image: url("img/jungle_floor.png");
+  width: 100%;
+  height: 60px;
+  bottom: 0;
+  margin-bottom:-60px;
   position: absolute;
+
 }
 
 
@@ -74,6 +105,18 @@ body {
   position: absolute;
   background-image: url("img/monkey_right.png");
   left: 80px;
+  color: white;
+  text-align: center;
+}
+
+#player2 {
+  height: 19px;
+  width: 25px;
+  top: 0;
+  margin-top: -19px;
+  margin-left: 10px;
+  position: absolute;
+  background-image: url("img/monkey_left.png");
   color: white;
   text-align: center;
 }
@@ -94,16 +137,4 @@ body {
   position: absolute;
   margin-top: -20px;
   color: black;
-}
-
-#firstb {
-  margin-left: 500px;
-}
-
-#secondb {
-  margin-left: 600px;
-}
-
-#thirdb {
-  margin-left: 700px;
 }
