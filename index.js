@@ -149,9 +149,9 @@ function roar() {
 function gamestart() {
 
   // Update each element of the game at a 120FPS framerate
-  loopPlayer = setInterval(updateJoueur, 1000.0/60.0); // game interface refreshed at 60 fps
-  loopBlock = setInterval(updateBlock, 1000.0/60); // game interface refreshed at 60 fps
-  loopState = setInterval(checkState, 1000.0/60); // game interface refreshed at 60 fps 
+  loopPlayer = setInterval(updateJoueur, 1000.0/120.0); // game interface refreshed at 120 fps
+  loopBlock = setInterval(updateBlock, 1000.0/120); // game interface refreshed at 120 fps
+  loopState = setInterval(checkState, 1000.0/120); // game interface refreshed at 120 fps 
   loopTime = setInterval(isTimeOver, 1000.0); // Check if the time is over
 }
 
@@ -174,7 +174,8 @@ function checkState(){
   // Check if the player touches the deadly spikes
   if(playerx + playerwidth > $("#deadlyspikes").offset().left){
     position = POSITION_START;
-  }
+    keyTaken = false;
+ }
 
   // Check if the player has taken the key
   if(playerx+playerwidth > $("#key").offset().left && playerx < $("#key").offset().left + $("#key").width()) {
