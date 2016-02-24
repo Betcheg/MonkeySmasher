@@ -9,12 +9,14 @@ $(document).ready(function() {
 
 // Game constants
 var POSITION_START = 80; // The player start 80px from the left
-var SPEED= 2;
-var GRAVITY=4;
+var SPEED= 4;
+var GRAVITY=8;
 var MAX_JUMP= 100;
 var POSITION_BLOCKS = 500;
 var SPACE_BETWEEN_BLOCKS = 5;
 var worldSize = $("#game").width();
+var BLOCK_SPEED = 12;
+var FPS = 60.0;
 
 // Game var
 var nextstep = 0; // the direction for the next game refresh
@@ -149,9 +151,9 @@ function roar() {
 function gamestart() {
 
   // Update each element of the game at a 120FPS framerate
-  loopPlayer = setInterval(updateJoueur, 1000.0/120.0); // game interface refreshed at 120 fps
-  loopBlock = setInterval(updateBlock, 1000.0/120); // game interface refreshed at 120 fps
-  loopState = setInterval(checkState, 1000.0/120); // game interface refreshed at 120 fps 
+  loopPlayer = setInterval(updateJoueur, 1000.0/FPS); // game interface refreshed at 120 fps
+  loopBlock = setInterval(updateBlock, 1000.0/FPS); // game interface refreshed at 120 fps
+  loopState = setInterval(checkState, 1000.0/FPS); // game interface refreshed at 120 fps 
   loopTime = setInterval(isTimeOver, 1000.0); // Check if the time is over
 }
 
@@ -289,16 +291,20 @@ function updateBlock() {
       y = div[i].position().top;
 
       if(y<10) { // The block falls slowly first ...
-        blocks[i].pos +=0.2;
+        blocks[i].pos += (BLOCK_SPEED/30);
         div[i].css({ top: blocks[i].pos });
       }
-      else if(blocks[i].pos < $("#game").height() - div[i].height()  ) { // And then goes full speed
-        blocks[i].pos +=6;
+      else if(blocks[i].pos +BLOCK_SPEED < $("#game").height() - div[i].height()  ) { // And then goes full speed
+        blocks[i].pos += BLOCK_SPEED;
         div[i].css({ top: blocks[i].pos });
+
       }
       else { // When the block reaches the floor, he cannot go any further
         blocks[i].state = "onfloor";
-      }
+      blocks[i].pos = $("#game").height() - div[i].height();
+      div[i].css({top: blocks[i].pos})
+    
+ }
     }
 
     else if(blocks[i].state == "onfloor"){
@@ -307,14 +313,14 @@ function updateBlock() {
       if(i==1) setTimeout(upBlock2, 1000.0)
       if(i==2) setTimeout(upBlock3, 1000.0)
       blocks[i].state = "waiting";
-    }
+      }
 
     else if(blocks[i].state == "goingup"){
       if(blocks[i].pos <= 0){
         blocks[i].pos = 0;
         blocks[i].state ="inactive";
       }
-      else blocks[i].pos -=1; // Raise while not in the celling
+      else blocks[i].pos -= (BLOCK_SPEED/6); // Raise while not in the celling
       div[i].css({ top: blocks[i].pos });
     }
   }
