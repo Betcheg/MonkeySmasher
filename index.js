@@ -149,9 +149,9 @@ function roar() {
 function gamestart() {
 
   // Update each element of the game at a 120FPS framerate
-  loopPlayer = setInterval(updateJoueur, 1000.0/60.0);
-  loopBlock = setInterval(updateBlock, 1000.0/60);
-  loopState = setInterval(checkState, 1000.0/60);
+  loopPlayer = setInterval(updateJoueur, 1000.0/60.0); // game interface refreshed at 60 fps
+  loopBlock = setInterval(updateBlock, 1000.0/60); // game interface refreshed at 60 fps
+  loopState = setInterval(checkState, 1000.0/60); // game interface refreshed at 60 fps 
 
 }
 
