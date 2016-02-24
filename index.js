@@ -5,8 +5,6 @@ $(document).ready(function() {
      $("body").css({backgroundImage: "url('')"});
      // redirect them to "mini" server
    }
-
-   gamestart();
 });
 
 // Game constants
@@ -33,6 +31,8 @@ var jumping=false;
 var isStillJumping = false;
 var isRoaring = false;
 var isGettingRoared = false;
+var beginning = Date.now(); //timestamp of the beginning of the game 
+var gameOver = false;
 
 //Debug mode ? set to true to show the debug console
 var debug = false;
@@ -152,7 +152,7 @@ function gamestart() {
   loopPlayer = setInterval(updateJoueur, 1000.0/60.0); // game interface refreshed at 60 fps
   loopBlock = setInterval(updateBlock, 1000.0/60); // game interface refreshed at 60 fps
   loopState = setInterval(checkState, 1000.0/60); // game interface refreshed at 60 fps 
-
+  loopTime = setInterval(isTimeOver, 1000.0); // Check if the time is over
 }
 
 function checkState(){
@@ -169,6 +169,11 @@ function checkState(){
       $("#player").css({ left: POSITION_START });
       keyTaken = false; // The key stay at the same place
     }
+  }
+
+  // Check if the player touches the deadly spikes
+  if(playerx + playerwidth > $("#deadlyspikes").offset().left){
+    position = POSITION_START;
   }
 
   // Check if the player has taken the key
@@ -209,13 +214,11 @@ function updateJoueur(){
       // If the player is in the peak of the jump, his speed decrease just like in real life
       if(velocity >0 ) velocity =  GRAVITY/5;
       else velocity =  -GRAVITY/5;
-      console.log("true");
     }
 
     else if($("#player").position().top < $("#game").height() - MAX_JUMP) {
       // He then falls full speed
       velocity = GRAVITY;
-      console.log("TRUE");
     }
     else {
       // Going up or down
@@ -242,7 +245,7 @@ function updateJoueur(){
     if($("#key").position().left <= $("#home").position().left + 60)
     if(!won) {
       alert("WELL PLAYED, YOU'VE WON \n"
-      +" // Feel free to do something here");
+      +" // Do something here");
       won = true;
       isRunningLeft = false;
       isRunningRight = false;
@@ -263,6 +266,20 @@ function updateJoueur(){
   }
 }
 
+
+function isTimeOver() {
+   
+    if(!gameOver && Date.now() - beginning > 30 * 1000)
+    {
+        alert("Game over"); // Game is over
+        gameOver = true;
+    }
+    else {
+        if(!gameOver) $("#time").text(Math.floor( 30-(Date.now() - beginning)/1000.0) + " sec"); // Write the remaining time
+    }
+    
+
+}
 
 function updateBlock() {
 
