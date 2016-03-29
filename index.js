@@ -9,6 +9,7 @@ $(document).ready(function() {
 
 // Game constants
 var POSITION_START = 80; // The player start 80px from the left
+var POSITION_START_Y = $("#player").position().top;
 var SPEED= 4;
 var GRAVITY=8;
 var MAX_JUMP= 100;
@@ -17,6 +18,7 @@ var SPACE_BETWEEN_BLOCKS = 5;
 var worldSize = $("#game").width();
 var BLOCK_SPEED = 12;
 var FPS = 60.0;
+var POSITION_KEY_START = $("#key").position().left;
 
 // Game var
 var nextstep = 0; // the direction for the next game refresh
@@ -35,6 +37,7 @@ var isRoaring = false;
 var isGettingRoared = false;
 var beginning = Date.now(); //timestamp of the beginning of the game 
 var gameOver = false;
+
 
 //Debug mode ? set to true to show the debug console
 var debug = false;
@@ -131,7 +134,6 @@ $(document).keyup(function(e){ // When a key is released
     isStillJumping = false;
   }
 });
-
 
 // On click event, may not be useful since A, Z, E can be pressed
 $("#firstb").click(function() {
@@ -272,13 +274,13 @@ function updateJoueur(){
 
 function isTimeOver() {
    
-    if(!gameOver && Date.now() - beginning > 30 * 1000)
+    if(!won && !gameOver && Date.now() - beginning > 30 * 1000)
     {
-        alert("Game over"); // Game is over
+        alert("Game over! \n Time is over!"); // Game is over
         gameOver = true;
     }
     else {
-        if(!gameOver) $("#time").text(Math.floor( 30-(Date.now() - beginning)/1000.0) + " sec"); // Write the remaining time
+        if(!gameOver && !won) $("#time").text(Math.floor( 30-(Date.now() - beginning)/1000.0) + " sec"); // Write the remaining time
     }
     
 
@@ -325,6 +327,32 @@ function updateBlock() {
     }
   }
 }
+
+// When the player regame
+$("#regame").click(function() {
+ gameOver = false;
+
+// Game var
+nextstep = 0; // the direction for the next game refresh
+velocity = 0; // Whether the monkey go up or down
+position = POSITION_START; // position set to the begining position
+$("#player").css({top: POSITION_START_Y}); // Position on the Y axis
+isRunningRight = false;
+isRunningLeft = false;
+keyTaken = false;
+$("#key").css({ left: POSITION_KEY_START});
+won = false;
+username = $("#username").text().trim();
+usernameSize = $("#username").width();
+jumping=false;
+isStillJumping = false;
+isRoaring = false;
+isGettingRoared = false;
+beginning = Date.now(); //timestamp of the beginning of the game 
+
+$("#player").css({left: "80px"});
+console.log("Fini");
+});
 
 function upBlock1() {
   blocks[0].state = "goingup";

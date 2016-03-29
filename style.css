@@ -38,14 +38,31 @@ body {
 #time {
 left: 0;
 top: 0;
-margin-top: 15px;
+padding-top: 15px;
+padding-bottom: 12px;
 position: absolute;
 font-size:25px;
-color: white;
+color: #27ae60;
 font-weight: bold;
 width: 100px;
 height: 25px;
 line-height: 25px;
+border-bottom: 5px solid #27ae60;
+}
+
+#regame {
+position: absolute;
+right: 0;
+top: 0;
+line-height: 25px;
+font-size: 25px;
+color: #27ae60;
+height: 25px;
+width: 200px;
+font-weight: bold;
+padding-top: 15px;
+padding-bottom: 12px;
+border-bottom: 5px solid #27ae60;
 }
 
 #world {
@@ -75,10 +92,11 @@ line-height: 25px;
 
 #deadlyspikes{
   position: absolute;
-  border-left: 12px solid red;
+  /*border-left: 12px solid red;*/
   margin-left: -10px;
-  background-color: brown;
+  background-image: url("img/spike.png");
   height: 250px;
+  width: 12px;
   left: 0;
   bottom: 0;
 }
