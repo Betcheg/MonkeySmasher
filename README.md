@@ -7,6 +7,7 @@
 http://betcheg.xyz/MonkeySmasher/
 
 Player 1 (Monkey) : Press arrow keys to move.
+
 Player 2 (Blocks) : Press A, Z, E to make the blocks fall.
 
 ### This is a two player game created with love and HTML5 
