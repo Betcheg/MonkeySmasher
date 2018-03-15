@@ -4,7 +4,7 @@
 
 ### Demo
 
-http://betcheg.xyz/MonkeySmasher/
+https://betcheg.github.io/index.html
 
 Player 1 (Monkey) : Press arrow keys to move.
 
